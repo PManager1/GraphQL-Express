@@ -22,7 +22,16 @@ var hobbyData = [
     {id: '3', title: 'Soccer',  description: 'the description' },
     {id: '4', title: 'Badminton',  description: 'the description' },
     {id: '5', title: 'Skates',  description: 'the description' },
-]
+];
+
+
+
+var postData = [
+    {id: '1', comment: 'First comment Ball' },
+    {id: '2', comment: 'second comment'   },
+    {id: '3', comment: 'Third comment'  },
+    {id: '4', comment: 'Forth Comment' },
+];
 
 
 
@@ -38,7 +47,7 @@ const UserType = new GraphQLObjectType({
     })
 });
 
-// Create types
+// Create HobbyType types
 const HobbyType = new GraphQLObjectType({
     name: 'Hobby', 
     description: 'Documentation for Hobby...', 
@@ -48,6 +57,17 @@ const HobbyType = new GraphQLObjectType({
         description: {type: GraphQLString}
     })
 });
+
+// Create Post types
+const PostType = new GraphQLObjectType({
+    name: 'Post', 
+    description: 'Post Documentation...', 
+    fields: () =>({
+        id: {type: GraphQLString}, 
+        comment: {type: GraphQLString}
+    })
+});
+
 
 // RootQuery 
 const RootQuery = new GraphQLObjectType({
@@ -77,7 +97,19 @@ const RootQuery = new GraphQLObjectType({
                 // we resolve get and 
                 //return data from data source. 
             }
-        }        
+        },
+        post: { 
+            type: PostType, 
+            args: {id: {type: GraphQLString}}, 
+
+            resolve(parent, args){
+               return _.find(postData, {
+                 id: args.id  
+               })
+                // we resolve get and 
+                //return data from data source. 
+            }
+        }                  
         
     }
 });
