@@ -1,0 +1,27 @@
+{
+  hobby(id:"2") {
+    title
+    id
+    user {
+      name
+      age
+      id
+    }
+  }
+}
+
+
+
+
+
+
+{
+  user(id:"2") {
+		age
+    posts{
+      comment
+      id
+    }
+  }
+}
+

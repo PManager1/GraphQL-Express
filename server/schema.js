@@ -6,6 +6,7 @@ const {
     GraphQLID,
     GraphQLString,
     GraphQLInt,
+    GraphQLList,
     GraphQLSchema
  } = graphql
 // Dummy Data 
@@ -27,7 +28,7 @@ var hobbyData = [
 var postData = [
     {id: '1', comment: 'First comment Ball', userId: '1' },
     {id: '2', comment: 'second comment', userId: '1'   },
-    {id: '3', comment: 'Third comment' , userId: '3' },
+    {id: '3', comment: 'Third comment' , userId: '2' },
     {id: '4', comment: 'Forth Comment' , userId: '1'},
 ];
 
@@ -41,7 +42,12 @@ const UserType = new GraphQLObjectType({
         id: {type: GraphQLString}, 
         name: {type: GraphQLString}, 
         age: {type: GraphQLInt}, 
-        profession: {type: GraphQLString}
+        profession: {type: GraphQLString}, 
+        
+        posts: { type: new GraphQLList(PostType),resolve(parent, args){
+            return _.filter(postData, { userId: parent.id })
+        } 
+        }
     })
 });
 
