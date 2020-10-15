@@ -2,11 +2,12 @@ const express = require('express');
 
 const { graphqlHTTP } = require('express-graphql');
 const app = express(); 
-import schema from './schema/schema';
+// import schema from './schema/schema';
+const schema = require('./schema');
 
 app.use('/graphql', graphqlHTTP({
+    graphiql: true,
     schema,
-    graphiql: true
 }))
 
 app.listen(4000 , () =>{

@@ -1,6 +1,0 @@
-{ 
-    id: 1, 
-    firstName: 'Tierney', 
-    lastName: 'Sutton',
-    age: 54
-}
