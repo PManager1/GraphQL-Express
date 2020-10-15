@@ -46,8 +46,14 @@ const UserType = new GraphQLObjectType({
         
         posts: { type: new GraphQLList(PostType),resolve(parent, args){
             return _.filter(postData, { userId: parent.id })
-        } 
+            } 
+        }, 
+
+        hobbies: { type: new GraphQLList(HobbyType),resolve(parent, args){
+            return _.filter(hobbyData, { userId: parent.id })
+            } 
         }
+
     })
 });
 
