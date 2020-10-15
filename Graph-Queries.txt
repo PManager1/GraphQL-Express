@@ -11,10 +11,6 @@
 }
 
 
-
-
-
-
 {
   user(id:"2") {
 		age
@@ -22,6 +18,25 @@
       comment
       id
     }
+  }
+}
+
+
+
+{
+  user(id:"1") {
+    name
+		age
+    id
+    posts{
+      id
+      comment
+    }
+		hobbies{
+      id
+      title
+    }
+
   }
 }
 
