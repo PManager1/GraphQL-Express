@@ -29,6 +29,12 @@ const RootQuery = new GraphQLObjectType({
             args: {id: {type: GraphQLString}}, 
 
             resolve(parent, args){
+                let user = {
+                    id: "123",
+                    age: 32,  
+                    name: "Paul",
+                }
+                return user;
                 // we resolve get and 
                 //return data from data source. 
             }
