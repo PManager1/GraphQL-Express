@@ -24,8 +24,6 @@ var hobbyData = [
     {id: '5', title: 'Skates',  description: 'the description' },
 ];
 
-
-
 var postData = [
     {id: '1', comment: 'First comment Ball', userId: '1' },
     {id: '2', comment: 'second comment', userId: '1'   },
@@ -94,8 +92,7 @@ const RootQuery = new GraphQLObjectType({
                return _.find(userData, {
                  id: args.id  
                })
-                // we resolve get and 
-                //return data from data source. 
+                
             }
         },
         hobby: { 
@@ -106,8 +103,7 @@ const RootQuery = new GraphQLObjectType({
                return _.find(hobbyData, {
                  id: args.id  
                })
-                // we resolve get and 
-                //return data from data source. 
+ 
             }
         },
         post: { 
@@ -118,8 +114,7 @@ const RootQuery = new GraphQLObjectType({
                return _.find(postData, {
                  id: args.id  
                })
-                // we resolve get and 
-                //return data from data source. 
+         
             }
         }                  
         
