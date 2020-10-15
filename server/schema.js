@@ -9,11 +9,11 @@ const {
 
 
 // Create types
-const userType = new GraphQLObjectType({
+const UserType = new GraphQLObjectType({
     name: 'User', 
     description: 'Documentation for user...', 
     fields: () =>({
-        id: {type: GraphQLID}, 
+        id: {type: GraphQLString}, 
         name: {type: GraphQLString}, 
         age: {type: GraphQLInt}, 
     })
@@ -25,13 +25,17 @@ const RootQuery = new GraphQLObjectType({
     description: 'RootQueryType for user...', 
     fields: {
         user: { 
-            type: userType, 
-            args: {}, 
+            type: UserType, 
+            args: {id: {type: GraphQLString}}, 
+
+            resolve(parent, args){
+                // we resolve get and 
+                //return data from data source. 
+            }
         }
         
     }
 });
-
 
 
 module.exports = new GraphQLSchema({
