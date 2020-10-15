@@ -9,7 +9,7 @@ const {
     GraphQLSchema
  } = graphql
 // Dummy Data 
-var usersData = [
+var userData = [
     {id: '1', name: 'Bond', age: 23, profession: "teacher" },
     {id: '2', name: 'James', age: 23, profession: "beggar" },
     {id: '3', name: 'Ahmed', age: 34 , profession: "whore"},
@@ -27,10 +27,10 @@ var hobbyData = [
 
 
 var postData = [
-    {id: '1', comment: 'First comment Ball' },
-    {id: '2', comment: 'second comment'   },
-    {id: '3', comment: 'Third comment'  },
-    {id: '4', comment: 'Forth Comment' },
+    {id: '1', comment: 'First comment Ball', userId: '1' },
+    {id: '2', comment: 'second comment', userId: '1'   },
+    {id: '3', comment: 'Third comment' , userId: '3' },
+    {id: '4', comment: 'Forth Comment' , userId: '1'},
 ];
 
 
@@ -54,7 +54,13 @@ const HobbyType = new GraphQLObjectType({
     fields: () =>({
         id: {type: GraphQLString}, 
         title: {type: GraphQLString}, 
-        description: {type: GraphQLString}
+        description: {type: GraphQLString}, 
+        user: {
+            type: UserType, 
+            resolve(parent, args){
+                return _.find(userData, { id: parent.userId})
+            }
+        }
     })
 });
 
@@ -64,7 +70,13 @@ const PostType = new GraphQLObjectType({
     description: 'Post Documentation...', 
     fields: () =>({
         id: {type: GraphQLString}, 
-        comment: {type: GraphQLString}
+        comment: {type: GraphQLString}, 
+        user: {
+            type: UserType, 
+            resolve(parent, args){
+                return _.find(userData, { id: parent.userId})
+            }
+        }
     })
 });
 
@@ -79,7 +91,7 @@ const RootQuery = new GraphQLObjectType({
             args: {id: {type: GraphQLString}}, 
 
             resolve(parent, args){
-               return _.find(usersData, {
+               return _.find(userData, {
                  id: args.id  
                })
                 // we resolve get and 
