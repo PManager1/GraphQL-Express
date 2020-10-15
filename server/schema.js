@@ -10,11 +10,18 @@ const {
  } = graphql
 // Dummy Data 
 var usersData = [
-    {id: '1', name: 'Bond', age: 23 },
-    {id: '2', name: 'James', age: 23 },
-    {id: '3', name: 'Ahmed', age: 34 },
-    {id: '4', name: 'Jay', age: 83 },
-    {id: '5', name: 'Jo', age: 23 },
+    {id: '1', name: 'Bond', age: 23, profession: "teacher" },
+    {id: '2', name: 'James', age: 23, profession: "beggar" },
+    {id: '3', name: 'Ahmed', age: 34 , profession: "whore"},
+    {id: '4', name: 'Jay', age: 83 ,profession: "real estate"},
+    {id: '5', name: 'Jo', age: 23 ,profession: "Builder"},
+];
+var hobbyData = [
+    {id: '1', title: 'Basket Ball', description: 'the description' },
+    {id: '2', title: 'FoodBall',  description: 'the description' },
+    {id: '3', title: 'Soccer',  description: 'the description' },
+    {id: '4', title: 'Badminton',  description: 'the description' },
+    {id: '5', title: 'Skates',  description: 'the description' },
 ]
 
 
@@ -27,6 +34,18 @@ const UserType = new GraphQLObjectType({
         id: {type: GraphQLString}, 
         name: {type: GraphQLString}, 
         age: {type: GraphQLInt}, 
+        profession: {type: GraphQLString}
+    })
+});
+
+// Create types
+const HobbyType = new GraphQLObjectType({
+    name: 'Hobby', 
+    description: 'Documentation for Hobby...', 
+    fields: () =>({
+        id: {type: GraphQLString}, 
+        title: {type: GraphQLString}, 
+        description: {type: GraphQLString}
     })
 });
 
@@ -43,11 +62,22 @@ const RootQuery = new GraphQLObjectType({
                return _.find(usersData, {
                  id: args.id  
                })
-                // return user;
                 // we resolve get and 
                 //return data from data source. 
             }
-        }
+        },
+        hobby: { 
+            type: HobbyType, 
+            args: {id: {type: GraphQLString}}, 
+
+            resolve(parent, args){
+               return _.find(hobbyData, {
+                 id: args.id  
+               })
+                // we resolve get and 
+                //return data from data source. 
+            }
+        }        
         
     }
 });
