@@ -105,10 +105,8 @@ const RootQuery = new GraphQLObjectType({
             args: {id: {type: GraphQLString}}, 
 
             resolve(parent, args){
-            //    return _.find(userData, {
-            //      id: args.id  
-            //    })
-                
+                console.log('108- parent=', parent);
+               return User.findById(args.id);
             }
         },
         hobby: { 
