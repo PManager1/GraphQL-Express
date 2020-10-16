@@ -6,9 +6,6 @@ const app = express();
 const schema = require('./schema');
 const testSchema = require('../schema/types_schema');
 
-
-// mongodb://<dbuser>:<dbpassword>@ds139715.mlab.com:39715/newdb
-
 mongoose.connect("mongodb://user:jallimlab9$@ds139715.mlab.com:39715/newdb", {
   useNewUrlParser: "true",
 })
@@ -22,8 +19,8 @@ mongoose.connection.on("connected", (err, res) => {
 
 app.use('/graphql', graphqlHTTP({
     graphiql: true,
-    // schema,
-    schema: testSchema,
+    schema,
+    // schema: testSchema,
 }))
 
 app.listen(4000 , () =>{

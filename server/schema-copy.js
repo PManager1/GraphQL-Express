@@ -1,5 +1,6 @@
-const graphql  = require('graphql');
 let _ = require('lodash'); 
+
+const graphql  = require('graphql');
 const {
     GraphQLObjectType,
     GraphQLID,
@@ -8,34 +9,29 @@ const {
     GraphQLList,
     GraphQLSchema
  } = graphql
-
-const User = require('../model/user'); 
-const Hobby = require('../model/hobby'); 
-const Post = require('../model/post'); 
-
-
 // Dummy Data 
-// var userData = [
-//     {id: '1', name: '1-Bond', age: 23, profession: "teacher" },
-//     {id: '2', name: '2-James', age: 23, profession: "beggar" },
-//     {id: '3', name: '3-Ahmed', age: 34 , profession: "whore"},
-//     {id: '4', name: '4-Jay', age: 83 ,profession: "real estate"},
-//     {id: '5', name: '5-Jo', age: 23 ,profession: "Builder"},
-// ];
-// var hobbyData = [
-//     {id: '1', title: 'Basket Ball', description: 'the description' , userId: '1' },
-//     {id: '2', title: 'FoodBall',  description: 'the description', userId: '2' },
-//     {id: '3', title: 'Soccer',  description: 'the description' , userId: '3' },
-//     {id: '4', title: 'Badminton',  description: 'the description' , userId: '4' },
-//     {id: '5', title: 'Skates',  description: 'the description' , userId: '5' },
-// ];
+var userData = [
+    {id: '1', name: '1-Bond', age: 23, profession: "teacher" },
+    {id: '2', name: '2-James', age: 23, profession: "beggar" },
+    {id: '3', name: '3-Ahmed', age: 34 , profession: "whore"},
+    {id: '4', name: '4-Jay', age: 83 ,profession: "real estate"},
+    {id: '5', name: '5-Jo', age: 23 ,profession: "Builder"},
+];
+var hobbyData = [
+    {id: '1', title: 'Basket Ball', description: 'the description' , userId: '1' },
+    {id: '2', title: 'FoodBall',  description: 'the description', userId: '2' },
+    {id: '3', title: 'Soccer',  description: 'the description' , userId: '3' },
+    {id: '4', title: 'Badminton',  description: 'the description' , userId: '4' },
+    {id: '5', title: 'Skates',  description: 'the description' , userId: '5' },
+];
 
-// var postData = [
-//     {id: '1', comment: 'First comment Ball', userId: '1' },
-//     {id: '2', comment: 'second comment', userId: '1'   },
-//     {id: '3', comment: 'Third comment' , userId: '2' },
-//     {id: '4', comment: 'Forth Comment' , userId: '1'},
-// ];
+var postData = [
+    {id: '1', comment: 'First comment Ball', userId: '1' },
+    {id: '2', comment: 'second comment', userId: '1'   },
+    {id: '3', comment: 'Third comment' , userId: '2' },
+    {id: '4', comment: 'Forth Comment' , userId: '1'},
+];
+
 
 
 // Create types
@@ -49,12 +45,12 @@ const UserType = new GraphQLObjectType({
         profession: {type: GraphQLString}, 
         
         posts: { type: new GraphQLList(PostType),resolve(parent, args){
-            // return _.filter(postData, { userId: parent.id })
+            return _.filter(postData, { userId: parent.id })
             } 
         }, 
 
         hobbies: { type: new GraphQLList(HobbyType),resolve(parent, args){
-            // return _.filter(hobbyData, { userId: parent.id })
+            return _.filter(hobbyData, { userId: parent.id })
             } 
         }
 
@@ -72,7 +68,7 @@ const HobbyType = new GraphQLObjectType({
         user: {
             type: UserType, 
             resolve(parent, args){
-                //return _.find(userData, { id: parent.userId})
+                return _.find(userData, { id: parent.userId})
             }
         }
     })
@@ -88,7 +84,7 @@ const PostType = new GraphQLObjectType({
         user: {
             type: UserType, 
             resolve(parent, args){
-                //return _.find(userData, { id: parent.userId})
+                return _.find(userData, { id: parent.userId})
             }
         }
     })
@@ -105,9 +101,9 @@ const RootQuery = new GraphQLObjectType({
             args: {id: {type: GraphQLString}}, 
 
             resolve(parent, args){
-            //    return _.find(userData, {
-            //      id: args.id  
-            //    })
+               return _.find(userData, {
+                 id: args.id  
+               })
                 
             }
         },
@@ -116,9 +112,9 @@ const RootQuery = new GraphQLObjectType({
             args: {id: {type: GraphQLString}}, 
 
             resolve(parent, args){
-            //    return _.find(hobbyData, {
-            //      id: args.id  
-            //    })
+               return _.find(hobbyData, {
+                 id: args.id  
+               })
  
             }
         },
@@ -127,9 +123,9 @@ const RootQuery = new GraphQLObjectType({
             args: {id: {type: GraphQLString}}, 
 
             resolve(parent, args){
-            //    return _.find(postData, {
-            //      id: args.id  
-            //    })
+               return _.find(postData, {
+                 id: args.id  
+               })
          
             }
         }                  
@@ -144,23 +140,24 @@ const Mutation = new GraphQLObjectType({
         createUser: {
             type: UserType, 
             args:{
+               // id:{type: GraphQLID}
                name: {type: GraphQLString}, 
                age:  {type: GraphQLInt}, 
                profession: {type: GraphQLString}, 
             }, 
             resolve(parent, args){
-               let user = new User ({
+               let user = {
                    name: args.name, 
                    age: args.age, 
                    profession: args.profession,
-               });
-            //save to our db; 
-               user.save(); 
+               } 
+               return user; 
             }
         },
         createPost: {
             type: PostType, 
             args:{
+               // id:{type: GraphQLID}  userId
                comment: {type: GraphQLString}, 
                userId:  {type: GraphQLID}, 
             }, 
@@ -169,9 +166,7 @@ const Mutation = new GraphQLObjectType({
                 comment: args.comment, 
                 userId: args.userId, 
                } 
-            //    return post; 
-            //save to our db; 
-            post.save(); 
+               return post; 
             }
         }        
     }
