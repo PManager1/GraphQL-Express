@@ -40,3 +40,17 @@
   }
 }
 
+// MUTATION 
+
+mutation{
+  createPost(comment: "the comment", userId: 2) {
+    comment
+			id
+    	user{
+        name
+        id
+      }
+  }
+    
+}
+
