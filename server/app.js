@@ -1,4 +1,5 @@
 const express = require('express'); 
+const mongoose = require('mongoose'); 
 
 const { graphqlHTTP } = require('express-graphql');
 const app = express(); 
@@ -6,6 +7,19 @@ const app = express();
 const schema = require('./schema');
 const testSchema = require('./types_schema');
 
+
+// mongodb://<dbuser>:<dbpassword>@ds139715.mlab.com:39715/newdb
+
+mongoose.connect("mongodb://user:jallimlab9$@ds139715.mlab.com:39715/newdb", {
+  useNewUrlParser: "true",
+})
+
+mongoose.connection.on("error", err => {
+  console.log("err", err)
+})
+mongoose.connection.on("connected", (err, res) => {
+  console.log("mongoose is connected")
+})
 
 app.use('/graphql', graphqlHTTP({
     graphiql: true,
