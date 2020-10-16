@@ -154,8 +154,8 @@ const Mutation = new GraphQLObjectType({
                    age: args.age, 
                    profession: args.profession,
                });
-            //save to our db; 
                user.save(); 
+               return user; 
             }
         },
         createPost: {
@@ -165,17 +165,32 @@ const Mutation = new GraphQLObjectType({
                userId:  {type: GraphQLID}, 
             }, 
             resolve(parent, args){
-               let post = {
+               let post = new Post ({
                 comment: args.comment, 
                 userId: args.userId, 
-               } 
-            //    return post; 
-            //save to our db; 
-            post.save(); 
+               });
+                post.save(); 
+                return post;
             }
-        }        
+        },
+        createHobby: {
+            type: HobbyType, 
+            args:{
+               title: {type: GraphQLString}, 
+               description: {type: GraphQLString}, 
+               userId:  {type: GraphQLID}, 
+            }, 
+            resolve(parent, args){
+               let hobby = new Hobby ({
+                title: args.title, 
+                description: args.description, 
+                userId: args.userId, 
+               });
+                hobby.save(); 
+                return hobby;
+            }
+        }                   
     }
-
 })
 
 
