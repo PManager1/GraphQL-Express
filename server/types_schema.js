@@ -5,6 +5,7 @@ const {
     GraphQLID,
     GraphQLString,
     GraphQLInt,
+    GraphQLNonNull,
     GraphQLList,
     GraphQLFloat,
     GraphQLSchema
@@ -17,10 +18,10 @@ const Person = new GraphQLObjectType({
     description: 'Represents a person type', 
     fields: () =>({
         id: {type: GraphQLInt}, 
-        name: {type: GraphQLString}, 
-        age: {type: GraphQLInt},
-        isMarried:  {type: GraphQLString}, 
-        gpa:  {type: GraphQLFloat}, 
+        name: {type: new GraphQLNonNull (GraphQLString)}, 
+        age: {type: new GraphQLNonNull (GraphQLInt)},
+        isMarried: {type: new GraphQLNonNull( GraphQLString)}, 
+        gpa: {type: new GraphQLNonNull (GraphQLFloat)}, 
     })
 })
 
