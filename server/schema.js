@@ -5,6 +5,7 @@ const {
     GraphQLID,
     GraphQLString,
     GraphQLInt,
+    GraphQLNonNull,
     GraphQLList,
     GraphQLSchema
  } = graphql
@@ -47,16 +48,18 @@ const UserType = new GraphQLObjectType({
         name: {type: GraphQLString}, 
         age: {type: GraphQLInt}, 
         profession: {type: GraphQLString}, 
-        
-        posts: { type: new GraphQLList(PostType),resolve(parent, args){
-            // return _.filter(postData, { userId: parent.id })
-            } 
-        }, 
 
-        hobbies: { type: new GraphQLList(HobbyType),resolve(parent, args){
-            // return _.filter(hobbyData, { userId: parent.id })
-            } 
-        }
+        posts: {  type: new GraphQLList(UserType), 
+            resolve(parent, args){
+               return Post.find({ });
+            }
+            },
+
+        hobbies: {  type: new GraphQLList(UserType), 
+                resolve(parent, args){
+                return Hobby.find({ });
+                }
+            },
 
     })
 });
@@ -73,6 +76,7 @@ const HobbyType = new GraphQLObjectType({
             type: UserType, 
             resolve(parent, args){
                 //return _.find(userData, { id: parent.userId})
+                return User.findById(parent.userId)
             }
         }
     })
@@ -88,7 +92,7 @@ const PostType = new GraphQLObjectType({
         user: {
             type: UserType, 
             resolve(parent, args){
-                //return _.find(userData, { id: parent.userId})
+                return User.findById(parent.userId)
             }
         }
     })
@@ -107,9 +111,8 @@ const RootQuery = new GraphQLObjectType({
                return User.findById(args.id);
             }
         },
-        users: { 
-            type: new GraphQLList(UserType),
-            // args: {id: {type: GraphQLString}}, 
+        users: {   // Search : you can update it to find by whatever
+            type: new GraphQLList(UserType), 
             resolve(parent, args){
                return User.find({ });
             }
@@ -119,23 +122,32 @@ const RootQuery = new GraphQLObjectType({
             args: {id: {type: GraphQLString}}, 
 
             resolve(parent, args){
-            //    return _.find(hobbyData, {
-            //      id: args.id  
-            //    })
- 
+                return Hobby.findById(args.id);
+            }
+        },
+
+        hobbies: { 
+            type: new GraphQLList(HobbyType), 
+
+            resolve(parent, args){
+                return Hobby.find({});
             }
         },
         post: { 
             type: PostType, 
-            args: {id: {type: GraphQLString}}, 
+            args: {id: {type: GraphQLID}}, 
 
             resolve(parent, args){
-            //    return _.find(postData, {
-            //      id: args.id  
-            //    })
-         
+                return Post.findById(args.id);
             }
-        }                  
+        },
+        
+        posts: { 
+            type: new GraphQLList(HobbyType), 
+            resolve(parent, args){
+                return Post.find({});
+            }
+        }
         
     }
 });
@@ -147,7 +159,7 @@ const Mutation = new GraphQLObjectType({
         createUser: {
             type: UserType, 
             args:{
-               name: {type: GraphQLString}, 
+               name: {type: new GraphQLNonNull (GraphQLString)}, 
                age:  {type: GraphQLInt}, 
                profession: {type: GraphQLString}, 
             }, 
@@ -159,6 +171,30 @@ const Mutation = new GraphQLObjectType({
                });
                user.save(); 
                return user; 
+            }
+        },
+
+        updateUser: {
+            type: UserType, 
+            args:{
+               id: {type: new GraphQLNonNull (GraphQLID)},
+               name: {type: new GraphQLNonNull (GraphQLString)}, 
+               age:  {type: GraphQLInt}, 
+               profession: {type: GraphQLString}, 
+            }, 
+            resolve(parent, args){
+
+               return updatedUser = User.findByIdAndUpdate(
+                    args.id,   
+                {
+                    $set: {
+                        name: args.name, 
+                        age: args.age, 
+                        profession: args.profession
+                        } 
+                },
+                {new: true} // send back the updated user.
+                )
             }
         },
         createPost: {
