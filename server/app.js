@@ -3,9 +3,8 @@ const mongoose = require('mongoose');
 
 const { graphqlHTTP } = require('express-graphql');
 const app = express(); 
-// import schema from './schema/schema';
 const schema = require('./schema');
-const testSchema = require('./types_schema');
+const testSchema = require('../schema/types_schema');
 
 
 // mongodb://<dbuser>:<dbpassword>@ds139715.mlab.com:39715/newdb
